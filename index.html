@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>A little something for you</title>
+  <!-- Google Fonts: Cormorant Garamond (Editorial serif), Alex Brush (Authentic script), Inter (Clean modern sans) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Ambient backdrop lighting & grain -->
+  <div class="ambient-background" id="ambientBg">
+    <div class="glow-orb orb-primary"></div>
+    <div class="glow-orb orb-secondary"></div>
+    <div class="focus-dim-layer" id="focusDimLayer"></div>
+    <div class="vignette-overlay" id="vignetteOverlay"></div>
+    <div class="film-grain"></div>
+  </div>
+
+  <!-- Atmospheric floating particles & petals canvas -->
+  <canvas id="particleCanvas"></canvas>
+
+  <main id="app">
+    <!-- SCREEN 1 & 2: Envelope Stage & Opening Sequence -->
+    <section id="screen-stage" class="screen screen-stage active">
+      <div class="scene-stage">
+        
+        <!-- Central 3D Envelope Wrapper -->
+        <div class="envelope-container" id="envelopeContainer" aria-label="Sealed envelope">
+          <div class="envelope-ambient-glow" id="envelopeGlow"></div>
+          
+          <div class="envelope" id="envelope">
+            <!-- Back interior of envelope -->
+            <div class="envelope-back"></div>
+
+            <!-- Warm radiant core inside envelope that emerges when opened -->
+            <div class="envelope-inner-light" id="innerLight"></div>
+
+            <!-- Letter inside: rises gracefully with handwritten text -->
+            <div class="envelope-letter" id="envelopeLetter">
+              <div class="letter-texture"></div>
+              <div class="letter-content">
+                <span class="letter-text" id="letterText">For you.</span>
+              </div>
+              <div class="letter-sheen"></div>
+              <div class="letter-line-accent"></div>
+            </div>
+
+            <!-- Left and Right side folds -->
+            <div class="envelope-side envelope-left"></div>
+            <div class="envelope-side envelope-right"></div>
+
+            <!-- Bottom fold -->
+            <div class="envelope-bottom"></div>
+
+            <!-- Top Flap (3D foldable with realistic reverse-side) -->
+            <div class="envelope-top-flap" id="topFlap">
+              <div class="flap-triangle"></div>
+              <!-- Elegant wax seal on top flap -->
+              <div class="wax-seal" id="waxSeal">
+                <div class="seal-inner">
+                  <svg class="seal-glyph" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <circle cx="12" cy="12" r="9" stroke-width="0.8" opacity="0.45"/>
+                    <path d="M12 7V17M9 10C9 10 10.5 8.5 12 8.5C13.5 8.5 15 10 15 10" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Typography & Interactive Staging for Screen 1 -->
+        <div class="narrative-stage" id="narrativeStage">
+          <!-- Text Sequence Area -->
+          <div class="text-container">
+            <p class="narrative-line line-1" id="textLine1">A little something I made for you...</p>
+            <p class="narrative-line line-2" id="textLine2">Hey… I built something for you. <span class="emoji-accent">🥹</span></p>
+          </div>
+
+          <!-- Interaction Button -->
+          <div class="action-container" id="actionContainer">
+            <button type="button" class="btn-open" id="openBtn" aria-label="Open the envelope">
+              <span class="btn-text">Open it</span>
+              <span class="btn-arrow" aria-hidden="true">→</span>
+              <span class="btn-glow"></span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Transition Bloom Overlay -->
+    <div class="transition-light-burst" id="lightBurst" aria-hidden="true"></div>
+
+    <!-- SCREEN 3 / CHAPTER 3: Text-Only Personal Chapter -->
+    <section id="screen-3" class="screen screen-3" aria-hidden="true">
+      <div class="text-story-stage" id="textStoryStage">
+        <!-- Soft warm ambient central glow for Chapter 3 -->
+        <div class="story-ambient-glow" aria-hidden="true"></div>
+
+        <!-- Narrative Content & Interactive Controls -->
+        <div class="story-narrative-wrapper">
+          <!-- Top Meta Bar: Chapter Label & Dynamic Progress -->
+          <div class="story-meta-bar">
+            <span class="chapter-label">Chapter III</span>
+            <span class="story-progress" id="storyProgress">01 / 16</span>
+          </div>
+
+          <!-- Active Text Presentation Display -->
+          <div class="story-text-display" id="storyTextDisplay" aria-live="polite">
+            <!-- Dynamically populated step-by-step by script.js -->
+          </div>
+
+          <!-- Minimal Navigation Buttons -->
+          <div class="story-nav-bar">
+            <button type="button" class="btn-nav-prev" id="btnPrev" aria-label="Previous moment" disabled>
+              <span class="btn-nav-arrow" aria-hidden="true">←</span>
+            </button>
+
+            <button type="button" class="btn-continue" id="btnContinue" aria-label="Continue story">
+              <span class="btn-continue-text" id="btnContinueText">Continue</span>
+              <span class="btn-continue-arrow" aria-hidden="true">→</span>
+              <span class="btn-glow"></span>
+            </button>
+          </div>
+
+          <!-- Keyboard Navigation Hint -->
+          <div class="keyboard-hint" aria-hidden="true">
+            <span>Use <kbd>←</kbd> and <kbd>→</kbd> arrow keys</span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SCREEN 4 / CHAPTER 4: Emotional Pause -->
+    <section id="screen-4" class="screen screen-4" aria-hidden="true">
+      <div class="pause-stage" id="pauseStage">
+        <div class="pause-text-group" id="pauseTextGroup">
+          <p class="pause-line pause-line-1" id="pauseLine1">There’s something I’ve been wanting to ask you...</p>
+          <h2 class="pause-line pause-line-2" id="pauseLine2">I have one question for you.</h2>
+          <p class="pause-line pause-line-3" id="pauseLine3">Take your time.</p>
+        </div>
+
+        <div class="pause-action-container" id="pauseActionContainer">
+          <button type="button" class="btn-ready" id="btnReady" aria-label="Tap when you're ready">
+            <span class="btn-ready-text">Tap when you’re ready</span>
+            <span class="btn-ready-arrow" aria-hidden="true">→</span>
+            <span class="btn-glow"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Center light beacon for Chapter 5 transition -->
+      <div class="pause-light-expand" id="pauseLightExpand" aria-hidden="true"></div>
+    </section>
+
+    <!-- SCREEN 5 / CHAPTER 5: The Question -->
+    <section id="screen-5" class="screen screen-5" aria-hidden="true">
+      <div class="question-stage" id="questionStage">
+        <!-- Soft warm ambient central glow for Chapter 5 -->
+        <div class="question-ambient-glow" aria-hidden="true"></div>
+
+        <div class="question-header-group" id="questionHeaderGroup">
+          <p class="question-lead question-lead-1" id="questionLead1">Okay...</p>
+          <p class="question-lead question-lead-2" id="questionLead2">Here’s what I’ve been wanting to ask you.</p>
+        </div>
+
+        <div class="question-main-wrapper" id="questionMainWrapper">
+          <div class="question-text-glow" aria-hidden="true"></div>
+          <h1 class="main-question-text" id="mainQuestionText">Can we become best friends?</h1>
+        </div>
+
+        <!-- Balanced dual choices with equal visual weight -->
+        <div class="question-choices-container" id="questionChoicesContainer">
+          <button type="button" class="btn-choice" id="btnChoiceYes" data-choice="yes" aria-label="Yes, obviously">
+            <span class="btn-choice-label">YES, OBVIOUSLY <span class="choice-emoji">🫶</span></span>
+            <span class="btn-glow"></span>
+          </button>
+
+          <button type="button" class="btn-choice" id="btnChoiceLetsSee" data-choice="lets-see" aria-label="Let's see">
+            <span class="btn-choice-label">LET’S SEE <span class="choice-emoji">👀</span></span>
+            <span class="btn-glow"></span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Center light beacon for Chapter 6 transition -->
+      <div class="chapter-light-expand" id="chapter5LightExpand" aria-hidden="true"></div>
+    </section>
+
+    <!-- SCREEN 6 / CHAPTER 6: "Feel It" (Music Chapter) -->
+    <section id="screen-6" class="screen screen-6" aria-hidden="true">
+      <div class="music-stage" id="musicStage">
+        
+        <!-- Subtle Night Sky Glow -->
+        <div class="night-ambient-glow" aria-hidden="true"></div>
+
+        <!-- Upper Intro Text Sequence -->
+        <div class="music-intro-group" id="musicIntroGroup">
+          <p class="music-whisper whisper-1" id="whisper1">Before anything else...</p>
+          <p class="music-whisper whisper-2" id="whisper2">Just listen to this.</p>
+          <p class="music-whisper whisper-3" id="whisper3">Take a moment.</p>
+        </div>
+
+        <!-- Custom Minimal Audio Player -->
+        <div class="music-player-container" id="musicPlayerContainer">
+          <audio id="storyAudio" src="assets/music/song.mp3" preload="metadata"></audio>
+          
+          <div class="player-controls-row">
+            <!-- Play/Pause Toggle -->
+            <button type="button" class="btn-play-toggle" id="btnPlayToggle" aria-label="Play song">
+              <svg class="icon-play" id="iconPlay" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z"/>
+              </svg>
+              <svg class="icon-pause" id="iconPause" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+              </svg>
+            </button>
+
+            <!-- Interactive Progress Scrubber -->
+            <div class="player-scrubber-wrapper" id="playerScrubberWrapper">
+              <div class="player-scrubber-track" id="playerScrubberTrack">
+                <div class="player-scrubber-fill" id="playerScrubberFill"></div>
+                <div class="player-scrubber-handle" id="playerScrubberHandle"></div>
+              </div>
+            </div>
+
+            <!-- Time Display -->
+            <div class="player-time-display">
+              <span id="playerCurrentTime">0:00</span>
+              <span class="time-sep">/</span>
+              <span id="playerTotalDuration">--:--</span>
+            </div>
+
+            <!-- Mute / Unmute Toggle -->
+            <button type="button" class="btn-volume-toggle" id="btnVolumeToggle" aria-label="Toggle mute">
+              <svg class="icon-vol-on" id="iconVolOn" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+              </svg>
+              <svg class="icon-vol-muted" id="iconVolMuted" viewBox="0 0 24 24" fill="currentColor" style="display: none;">
+                <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+              </svg>
+            </button>
+          </div>
+
+          <!-- Subtle Soundwave Visualizer -->
+          <div class="player-visualizer" id="playerVisualizer" aria-hidden="true">
+            <span class="viz-bar bar-1"></span>
+            <span class="viz-bar bar-2"></span>
+            <span class="viz-bar bar-3"></span>
+            <span class="viz-bar bar-4"></span>
+            <span class="viz-bar bar-5"></span>
+          </div>
+        </div>
+
+        <!-- Lower Narrative Guidance & Transition Button -->
+        <div class="music-outro-group" id="musicOutroGroup">
+          <p class="music-reflection refl-1" id="refl1">Close your eyes for a moment.</p>
+          <p class="music-reflection refl-2" id="refl2">Feel the song.</p>
+          <p class="music-reflection refl-3" id="refl3">And when you’re ready… continue. <span class="heart-accent">❤️</span></p>
+
+          <div class="music-action-wrapper" id="musicActionWrapper">
+            <button type="button" class="btn-music-ready" id="btnMusicReady" aria-label="I'm ready">
+              <span class="btn-music-text">I’m ready</span>
+              <span class="btn-music-arrow" aria-hidden="true">→</span>
+              <span class="btn-glow"></span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Light expand transition into Final Screen -->
+      <div class="chapter-light-expand" id="chapter6LightExpand" aria-hidden="true"></div>
+    </section>
+
+    <!-- SCREEN 7 / FINAL CHAPTER -->
+    <section id="screen-7" class="screen screen-7" aria-hidden="true">
+      <div class="final-chapter-stage" id="finalChapterStage">
+        <!-- Soft warm ambient central glow -->
+        <div class="final-ambient-glow" aria-hidden="true"></div>
+
+        <!-- Opening Text Group -->
+        <div class="final-opening-group" id="finalOpeningGroup">
+          <p class="final-line final-line-1" id="finalLine1">Whatever your answer is...</p>
+          <p class="final-line final-line-2" id="finalLine2">I’m really glad you made it this far.</p>
+          <p class="final-line final-line-3" id="finalLine3">And now...</p>
+          <h2 class="final-line final-line-4" id="finalLine4">Tell me what you actually feel.</h2>
+        </div>
+
+        <!-- Balanced 3 Choices: YES, LET'S SEE, LET'S TALK -->
+        <div class="final-choices-container" id="finalChoicesContainer">
+          <button type="button" class="btn-final-choice" id="btnFinalYes" data-final-choice="yes" aria-label="Yes">
+            <span class="btn-final-label">YES <span class="choice-emoji">🫶</span></span>
+            <span class="btn-glow"></span>
+          </button>
+
+          <button type="button" class="btn-final-choice" id="btnFinalLetsSee" data-final-choice="lets-see" aria-label="Let's see">
+            <span class="btn-final-label">LET’S SEE <span class="choice-emoji">👀</span></span>
+            <span class="btn-glow"></span>
+          </button>
+
+          <button type="button" class="btn-final-choice" id="btnFinalLetsTalk" data-final-choice="lets-talk" aria-label="Let's talk">
+            <span class="btn-final-label">LET’S TALK <span class="choice-emoji">❤️</span></span>
+            <span class="btn-glow"></span>
+          </button>
+        </div>
+
+        <!-- Personalized Response Group -->
+        <div class="final-response-container" id="finalResponseContainer" aria-live="polite"></div>
+
+        <!-- Closing Emotional Message -->
+        <div class="final-closing-container" id="finalClosingContainer">
+          <p class="closing-line closing-line-1" id="closingLine1">Whatever happens from here...</p>
+          <p class="closing-line closing-line-2" id="closingLine2">I’m glad I got to make this little world for you.</p>
+          <p class="closing-line closing-line-3" id="closingLine3">Thank you for being you. <span class="heart-accent">❤️</span></p>
+        </div>
+
+        <!-- Restart Flow -->
+        <div class="final-restart-container" id="finalRestartContainer">
+          <button type="button" class="btn-restart" id="btnRestart" aria-label="Start again from beginning">
+            <span class="btn-restart-text">Start again ↻</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
